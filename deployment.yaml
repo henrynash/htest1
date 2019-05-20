@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: htest1-web
+  labels:
+    app: htest1-web
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: htest1-web
+  selector:
+    app: htest1-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: htest1-web
+  labels:
+    app: htest1-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: htest1-web
+  template:
+    metadata:
+      labels:
+        app: htest1-web
+    spec:
+      containers:
+      - name: htest1-web
+        image: docker.io/henrynash/htest1
+        ports:
+        - containerPort: 8080
